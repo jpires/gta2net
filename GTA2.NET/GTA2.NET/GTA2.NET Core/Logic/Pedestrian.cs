@@ -30,28 +30,33 @@ using System;
 
 namespace Hiale.GTA2NET.Core.Logic
 {
+    /// <summary>
+    /// Used to represent a Pedestrian.
+    /// </summary>
     public class Pedestrian : ControlableGameObject
     {
-        private Color _color;
-
-        private bool _isJumping;
-
-        private int _healthPoint;
-
-        private List<Weapon> _weapons;
-
-        private Weapon _currentWeapon; //selected weapon
-
+        /// <summary>
+        /// Creates an instance of Pedestrian.
+        /// </summary>
+        /// <param name="startUpPosition">The star position of the Pedestrian.</param>
         public Pedestrian(Vector3 startUpPosition) : base(startUpPosition, 0, new Helper.CompactRectangle(0, 0, 1, 1))
         {
-            //Velocity = 1f;
         }
 
+        /// <summary>
+        /// Updates the state of the Object.
+        /// </summary>        
+        /// <param name="input">The Input to apply to the Object.</param>
         public override void Update(float elapsedTime)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// Updates the state of the Object.
+        /// </summary>        
+        /// <param name="input">The Input to apply to the Object.</param>
+        /// <param name="elapsedTime">The time occurred since the last Update.</param>
         public override void Update(ParticipantInput input, float elapsedTime)
         {
             float x, y;

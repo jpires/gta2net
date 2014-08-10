@@ -34,6 +34,7 @@ namespace Hiale.GTA2NET.Core.Logic
 {
     /// <summary>
     /// Represent a Game Object.
+    /// Should be used as the parent for all objects that have a graphical representation, e.g. pedestrian, powerup, cars.
     /// </summary>
     public abstract class GameObject
     {
@@ -57,7 +58,7 @@ namespace Hiale.GTA2NET.Core.Logic
         }
 
         /// <summary>
-        /// 2D position of the object
+        /// 2D position of the object.
         /// </summary>
         public Vector2 Position2
         {
@@ -86,14 +87,14 @@ namespace Hiale.GTA2NET.Core.Logic
         }
 
         /// <summary>
-        /// Store the Sprite ID for this object
+        /// Store the Sprite ID for this object.
         /// </summary>
         protected uint spriteID;        
 
         /// <summary>
         /// The rotation of the sprite.
         /// </summary>
-        /// <remarks>Since the angles in GTA2 are weird, so this values are always -pi/2 or -90º defased.</remarks>
+        /// <remarks>Since the angles in GTA2 are weird, so this values are always -pi/2 or -90º defased from the Position3.</remarks>
         protected float spriteRotation { get; private set; }
 
         /// <summary>
@@ -111,11 +112,16 @@ namespace Hiale.GTA2NET.Core.Logic
         /// </summary>
         protected CompactRectangle shape;  //ToDo: its may be a good idea to used something other than a rectangle...
 
+        /// <summary>
+        /// The Coordinates used to draw this object.
+        /// Uses the Position as the central point and the shape to calculate the four vertices.
+        /// </summary>
         protected FaceCoordinates drawCoordinates;
+
         /// <summary>
         /// Creates all the necessary things to draw the object
         /// </summary>
-        /// <returns>A ModelData with the data to draw the object</returns>
+        /// <returns>A Frame with the data needed to draw the object</returns>
         public virtual Frame Draw() 
         {
             verticesCollection.Clear();
@@ -153,7 +159,7 @@ namespace Hiale.GTA2NET.Core.Logic
         public abstract void Update(float elapsedTime);
         
         /// <summary>
-        /// Creates a instance of GameObject
+        /// Creates an instance of GameObject
         /// </summary>
         /// <param name="startUpPosition">The initial position for the object</param>
         /// <param name="startUpRotation">The initial rotation of the object</param>

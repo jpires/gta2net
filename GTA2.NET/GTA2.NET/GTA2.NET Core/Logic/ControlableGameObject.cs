@@ -30,39 +30,32 @@ using Hiale.GTA2NET.Core.Helper;
 namespace Hiale.GTA2NET.Core.Logic
 {
     /// <summary>
-    /// Represent a GameObject that a player could control
+    /// Represent a GameObject that a player could control.
+    /// Should be used as the parent for all controlable objects, e.g. cars, and pedestrians.
     /// </summary>
     public abstract class ControlableGameObject : GameObject
     {
         /// <summary>
-        /// True in case a player control this object, False otherwise
+        /// True in case a player control this object, False otherwise.
         /// </summary>
         public Boolean PlayerControlled { get; set; }
 
         /// <summary>
-        /// Creates a instance of ControlableGameObject
+        /// Creates an instance of ControlableGameObject.
         /// </summary>
-        /// <param name="startUpPosition">The initial position for the object</param>
-        /// <param name="startUpRotation">The initial rotation of the object</param>
-        protected ControlableGameObject(Vector3 startUpPosition, float startUpRotation) : base(startUpPosition, startUpRotation, new Helper.CompactRectangle(0,0,1,1))
-        {
-        }
-
-        /// <summary>
-        /// Creates a instance of ControlableGameObject
-        /// </summary>
-        /// <param name="startUpPosition">The initial position for the object</param>
-        /// <param name="startUpRotation">The initial rotation of the object</param>
+        /// <param name="startUpPosition">The initial position for the object.</param>
+        /// <param name="startUpRotation">The initial rotation of the object.</param>
+        /// <param name="shape">The shape for this object.</param>
         protected ControlableGameObject(Vector3 startUpPosition, float startUpRotation, CompactRectangle shape)
             : base(startUpPosition, startUpRotation, shape)
         {
         }
 
         /// <summary>
-        /// Updates the state of the Object
+        /// Updates the state of the Object.
         /// </summary>        
-        /// <param name="input">The Input to apply to the Object</param>
-        /// <param name="elapsedTime">The time occurred since the last Update</param>
+        /// <param name="input">The Input to apply to the Object.</param>
+        /// <param name="elapsedTime">The time occurred since the last Update.</param>
         public abstract void Update(ParticipantInput input, float elapsedTime);
     }
 }
