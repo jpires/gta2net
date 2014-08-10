@@ -28,7 +28,6 @@ using Hiale.GTA2NET.Core;
 using Hiale.GTA2NET.Core.Helper;
 using Hiale.GTA2NET.Core.Logic;
 using Hiale.GTA2NET.Core.Map;
-using Hiale.GTA2NET.GameScreens;
 using J2i.Net.XInputWrapper;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
