@@ -30,26 +30,34 @@ using System.Linq;
 
 namespace Hiale.GTA2NET.Core.Map
 {
+    /// <summary>
+    /// Used to represent the Wall of a Block.
+    /// </summary>
     public class BlockFaceEdge : BlockFace
     {
-        public static BlockFaceEdge Empty = new BlockFaceEdge();
-
         /// <summary>
-        /// Wall indicates whether or not a car, ped or object should collide with this tile.
+        /// Indicates whether or not a car, ped or object should collide with this tile.
         /// </summary>
         public bool Wall { get; internal set; }
 
         /// <summary>
-        /// BulletWall indicates whether or not a bullet should collide with this tile.
+        /// Indicates whether or not a bullet should collide with this tile.
         /// </summary>
         public bool BulletWall { get; internal set; }
 
-        private BlockFaceEdge()
+        /// <summary>
+        /// Creates an instance of BlockFaceEdge with the default values.
+        /// </summary>
+        public BlockFaceEdge() : base()
         {
             Wall = false;
             BulletWall = false;
         }
 
+        /// <summary>
+        /// Creates an instance of BlockFaceEdge
+        /// </summary>
+        /// <param name="value">The value read from the original map format, it will construct the Block with the correct values.</param>
         public BlockFaceEdge(ushort value) : base(value)
         {
             Wall = BitHelper.CheckBit(value, 10);

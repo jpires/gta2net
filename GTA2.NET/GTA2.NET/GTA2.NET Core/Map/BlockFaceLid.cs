@@ -25,35 +25,57 @@
 // Grand Theft Auto (GTA) is a registred trademark of Rockstar Games.
 using System.IO;
 using Hiale.GTA2NET.Core.Helper;
+using System;
 
 namespace Hiale.GTA2NET.Core.Map
 {
+    /// <summary>
+    /// Used to represent the lid of a Block
+    /// </summary>
     public class BlockFaceLid : BlockFace
     {
-        public static BlockFaceLid Empty = new BlockFaceLid();
-
         /// <summary>
         /// Lighting level marks which shading level to apply to a lid tile. 0 is normal brightness. 1-3 are increasing levels of darkness.
         /// </summary>
         public byte LightningLevel { get; private set; }
 
-        private BlockFaceLid()
+        /// <summary>
+        /// Creates an instance of BlockFaceEdge with the default values.
+        /// </summary>
+        public BlockFaceLid() : base()
         {
             LightningLevel = 0;
         }
 
+        /// <summary>
+        /// Creates an instance of BlockFaceEdge
+        /// </summary>
+        /// <param name="value">The value read from the original map format, it will construct the Block with the correct values.</param>
         public BlockFaceLid(ushort value) : base(value)
         {
-            var bit10 = BitHelper.CheckBit(value, 10);
-            var bit11 = BitHelper.CheckBit(value, 11);
+            Boolean bit10 = BitHelper.CheckBit(value, 10);
+            Boolean bit11 = BitHelper.CheckBit(value, 11);
+
             if (!bit10 && !bit11)
+            {
                 LightningLevel = 0;
+                return;
+            }
             if (bit10 && !bit11)
+            {
                 LightningLevel = 1;
+                return;
+            }
             if (!bit10 && bit11)
+            {
                 LightningLevel = 2;
+                return;
+            }
             if (bit10 && bit11)
+            {
                 LightningLevel = 3;
+                return;
+            }
         }
     }
 }

@@ -36,6 +36,10 @@ namespace Hiale.GTA2NET.Core.Map
         Rotate270
     }
 
+    /// <summary>
+    /// Represents a side of a Block.
+    /// Since the walls and the lid have different functionlities this class must be extended with those differences.
+    /// </summary>
     public abstract class BlockFace
     {
         /// <summary>
@@ -62,6 +66,9 @@ namespace Hiale.GTA2NET.Core.Map
         /// </summary>
         public RotationType Rotation { get; private set; }
 
+        /// <summary>
+        /// Creates an instance of BlockFace, with default values.
+        /// </summary>
         protected BlockFace()
         {
             TileNumber = 0;
@@ -71,9 +78,9 @@ namespace Hiale.GTA2NET.Core.Map
         }
 
         /// <summary>
-        /// Represents a face (left, right, top, bottom, lid) of a block.
+        /// Creates an instance of BlockFace.
         /// </summary>
-        /// <param name="value">Base ushort value of this face.</param>
+        /// <param name="value">The value read from the original map format, it will construct the Block with the correct values.</param>
         protected BlockFace(ushort value)
         {
             if (value == 0)
@@ -89,16 +96,28 @@ namespace Hiale.GTA2NET.Core.Map
             Flat = BitHelper.CheckBit(value, 12); //Bit 12
             Flip = BitHelper.CheckBit(value, 13); //Bit 13
 
-            var bit14 = BitHelper.CheckBit(value, 14);
-            var bit15 = BitHelper.CheckBit(value, 15);
+            Boolean bit14 = BitHelper.CheckBit(value, 14);
+            Boolean bit15 = BitHelper.CheckBit(value, 15);
             if (!bit14 && !bit15)
+            {
                 Rotation = RotationType.RotateNone;
+                return;
+            }
             if (bit14 && !bit15)
+            {
                 Rotation = RotationType.Rotate90;
+                return;
+            }
             if (!bit14 && bit15)
+            {
                 Rotation = RotationType.Rotate180;
+                return;
+            }
             if (bit14 && bit15)
+            {
                 Rotation = RotationType.Rotate270;
+                return;
+            }
         }
 
         public static implicit operator bool(BlockFace blockface)

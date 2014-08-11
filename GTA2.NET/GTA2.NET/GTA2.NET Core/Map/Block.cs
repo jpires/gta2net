@@ -53,20 +53,20 @@ namespace Hiale.GTA2NET.Core.Map
     /// </summary>
     public abstract class Block
     {
-
         /// <summary>
         /// Size of a PartialBlocks
         /// </summary>
         static protected float PartialBlockScalar = 0.375f;
+
         /// <summary>
         /// Size of the blocks
         /// </summary>
         static protected Vector3 GlobalScalar = new Vector3(1, 1, 0.5f);
+
         /// <summary>
         /// Used to retrive the Texture to the faces of block.
         /// </summary>
         static public Textures textures;
-
 
         protected BlockStructure BlockStructure;
 
@@ -91,11 +91,11 @@ namespace Hiale.GTA2NET.Core.Map
 
         protected Block()
         {
-            Left = BlockFaceEdge.Empty;
-            Right = BlockFaceEdge.Empty;
-            Top = BlockFaceEdge.Empty;
-            Bottom = BlockFaceEdge.Empty;
-            Lid = BlockFaceLid.Empty;
+            Left = new BlockFaceEdge();
+            Right = new BlockFaceEdge();
+            Top = new BlockFaceEdge();
+            Bottom = new BlockFaceEdge();
+            Lid = new BlockFaceLid();
 
             Coors = new List<VertexPositionNormalTexture>();
             IndexBufferCollection = new List<int>();
