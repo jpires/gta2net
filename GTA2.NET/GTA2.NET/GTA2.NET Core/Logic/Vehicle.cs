@@ -30,23 +30,18 @@ using Microsoft.Xna.Framework;
 
 namespace Hiale.GTA2NET.Core.Logic
 {
-    public abstract class Vehicle : ControlableGameObject, IPhysicsBehaviour, ISprite
+    /// <summary>
+    /// Used as a base class for vehicles.
+    /// </summary>
+    public abstract class Vehicle : ControlableGameObject, IPhysicsBehaviour
     {
-        protected Vehicle(Vector3 startUpPosition, float startUpRotation) : base(startUpPosition, startUpRotation, new Helper.CompactRectangle())
+        /// <summary>
+        /// Creates an instance of Vehicle.
+        /// </summary>
+        /// <param name="startUpPosition">The starting position.</param>
+        /// <param name="startUpRotation">The start rotation.</param>
+        protected Vehicle(Vector3 startUpPosition, float startUpRotation) : base(startUpPosition, startUpRotation, new Helper.CompactRectangle(0,0,1,1))
         {
-
-        }
-
-        public new virtual Vector3 Position3
-        {
-            get { return base.Position3; }
-            set { base.Position3 = value; }
-        }
-
-        public new virtual Vector2 Position2
-        {
-            get { return base.Position2; }
-            set { throw new NotSupportedException("Set Position3 instead."); }
         }
 
         public abstract event EventHandler Collided; //ToDo: change EventHandler to something more specific...
@@ -58,13 +53,5 @@ namespace Hiale.GTA2NET.Core.Logic
         public abstract float CollisionWidth { get; }
         public abstract float CollisionHeight { get; }
         public abstract void CreateBody(World world, float width, float height);
-
-        public abstract Vector2 SpriteTopLeft { get; }
-        public abstract Vector2 SpriteTopRight { get; }
-        public abstract Vector2 SpriteBottomRight { get; }
-        public abstract Vector2 SpriteBottomLeft { get; }
-        public abstract float SpriteWidth { get; }
-        public abstract float SpriteHeight { get; }
-        public abstract void SetDimensions(float width, float height);
     }
 }

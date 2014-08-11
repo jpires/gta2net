@@ -81,9 +81,7 @@
     <Compile Include="Logic\CarWeapon.cs" />
     <Compile Include="Logic\ControlableGameObject.cs" />
     <Compile Include="Logic\GameObject.cs" />
-    <Compile Include="Logic\IGameplayObject.cs" />
     <Compile Include="Logic\IPhysicsBehaviour.cs" />
-    <Compile Include="Logic\ISprite.cs" />
     <Compile Include="Logic\ParticipantInput.cs" />
     <Compile Include="Logic\Pedestrian.cs" />
     <Compile Include="Logic\Physics.cs" />

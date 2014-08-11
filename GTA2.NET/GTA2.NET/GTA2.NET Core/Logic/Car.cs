@@ -109,46 +109,10 @@ namespace Hiale.GTA2NET.Core.Logic
             return vector.ToBlockUnits();
         }
 
-        public override Vector2 SpriteTopLeft
-        {
-            get { return GetSpriteVector(0); }
-        }
-
-        public override Vector2 SpriteTopRight
-        {
-            get { return GetSpriteVector(1); }
-        }
-
-        public override Vector2 SpriteBottomLeft
-        {
-            get { return GetSpriteVector(3); }
-        }
-
-        public override Vector2 SpriteBottomRight
-        {
-            get { return GetSpriteVector(2); }
-        }
-
-        public override float SpriteWidth
-        {
-            get { return _spriteWidth; }
-        }
-
-        public override float SpriteHeight
-        {
-            get { return _spriteHeight; }
-        }
-
         public new float RotationAngle
         {
             get { return _body.Rotation; }
-        }
-
-        public override void SetDimensions(float width, float height)
-        {
-            _spriteWidth = width;
-            _spriteHeight = height;
-        }
+        }      
 
         public Car(Vector3 startUpPosition, float startUpRotation, CarInfo carInfo) : base(startUpPosition, startUpRotation)
         {
