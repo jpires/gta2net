@@ -31,6 +31,7 @@ using Hiale.GTA2NET.Core.Map;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Jitter.Dynamics;
+using Hiale.GTA2NET.Core.Physics;
 
 namespace Hiale.GTA2NET.Core
 {
@@ -41,7 +42,7 @@ namespace Hiale.GTA2NET.Core
     {
         private Map.Map map;
         //Physic stuff
-        private Physics _physics;
+        private WorldSimulation _physics;
         private Sprites sprites;
         private PlayerInput playerInput;
 
@@ -52,7 +53,7 @@ namespace Hiale.GTA2NET.Core
             map = new Map.Map(mapName, styleName);
             map.CalcCoord();
 
-            _physics = new Physics(map);
+            _physics = new WorldSimulation(map);
 
             sprites = new Sprites();
             GameObject.spriteAtlas = sprites;
