@@ -25,7 +25,6 @@
 // Grand Theft Auto (GTA) is a registred trademark of Rockstar Games.
 
 using System;
-using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 
 namespace Hiale.GTA2NET.Core.Logic
@@ -52,6 +51,5 @@ namespace Hiale.GTA2NET.Core.Logic
         public abstract Vector2 CollisionBottomLeft { get; }
         public abstract float CollisionWidth { get; }
         public abstract float CollisionHeight { get; }
-        public abstract void CreateBody(World world, float width, float height);
     }
 }

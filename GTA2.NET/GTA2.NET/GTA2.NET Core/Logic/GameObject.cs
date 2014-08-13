@@ -1,5 +1,4 @@
-﻿using FarseerPhysics.Collision.Shapes;
-// GTA2.NET
+﻿// GTA2.NET
 // 
 // File: GameplayObject.cs
 // Created: 14.07.2013

@@ -26,8 +26,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FarseerPhysics.Common;
-using FarseerPhysics.Common.PolygonManipulation;
 using Hiale.GTA2NET.Core.Helper;
 using Hiale.GTA2NET.Core.Map;
 using Microsoft.Xna.Framework;
@@ -43,6 +41,7 @@ namespace Hiale.GTA2NET.Core.Collision
 
         public override void Tokenize(ObstacleCollection obstacles)
         {
+            /*
             var polygons = SplitPolygon(Lines, obstacles);
             var blocks = Polygon.GetAssociatedBlocks(polygons, Map, Layer).ToList();
             var polygonEdges = new List<LineSegment>();
@@ -94,6 +93,8 @@ namespace Hiale.GTA2NET.Core.Collision
                 var simplePolygon = SimplifyTools.CollinearSimplify(polygon);
                 AddSlopeObstacle(simplePolygon, VerticesEx.IsRectangle(simplePolygon), obstacles, Layer);
             }
+        
+             */ 
         }
 
         private static void AddBlockLines(IDictionary<Block, List<LineSegment>> blockLines, Block block, LineSegment intersectionLine)
@@ -261,7 +262,7 @@ namespace Hiale.GTA2NET.Core.Collision
 
             return false;
         }
-
+/*
         protected static void AddSlopeObstacle(Vertices polygonVertices, bool isRectangle, ObstacleCollection obstacles, int layer)
         {
             if (isRectangle)
@@ -275,5 +276,6 @@ namespace Hiale.GTA2NET.Core.Collision
                 obstacles.Add(polygonObstacle);
             }
         }
+ */
     }
 }

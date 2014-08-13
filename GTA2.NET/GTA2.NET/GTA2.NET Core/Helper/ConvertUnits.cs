@@ -27,7 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FarseerPhysics.Common;
 using Microsoft.Xna.Framework;
 
 namespace Hiale.GTA2NET.Core.Helper
@@ -47,10 +46,11 @@ namespace Hiale.GTA2NET.Core.Helper
             return Vector2.Multiply(blockUnits, MetersPerBlock);
         }
 
+        /*
         public static Vertices ToMeters(this List<Vector2> blockUnits)
         {
             return new Vertices(blockUnits.Select(blockUnit => blockUnit.ToMeters()).ToList());
-        }
+        }*/
 
         public static float ToBlockUnits(int pixels)
         {

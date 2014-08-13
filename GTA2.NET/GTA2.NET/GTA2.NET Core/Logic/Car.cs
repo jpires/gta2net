@@ -25,12 +25,6 @@
 // Grand Theft Auto (GTA) is a registred trademark of Rockstar Games.
 
 using System;
-using FarseerPhysics.Collision.Shapes;
-using FarseerPhysics.Common;
-using FarseerPhysics.Dynamics;
-using FarseerPhysics.Dynamics.Contacts;
-using FarseerPhysics.Dynamics.Joints;
-using FarseerPhysics.Factories;
 using Hiale.GTA2NET.Core.Helper;
 using Microsoft.Xna.Framework;
 
@@ -52,9 +46,9 @@ namespace Hiale.GTA2NET.Core.Logic
         private const float angleLock = 35f;
         private const float lockToLockTime = 500; //from lock to lock in 0.5 seconds
 
-        private Body _body;
-        private PolygonShape _shape;
-        private PolygonShape _spriteShape;
+        //private Body _body;
+        //private PolygonShape _shape;
+        //private PolygonShape _spriteShape;
 
         private float _collisionWidth;
         private float _collisionHeight;
@@ -63,10 +57,10 @@ namespace Hiale.GTA2NET.Core.Logic
 
         private readonly Wheel[] _wheels;
 
-        private RevoluteJoint _backLeftJoint;
-        private RevoluteJoint _backRightJoint;
-        private RevoluteJoint _frontLeftJoint;
-        private RevoluteJoint _frontRightJoint;
+        //private RevoluteJoint _backLeftJoint;
+        //private RevoluteJoint _backRightJoint;
+        //private RevoluteJoint _frontLeftJoint;
+        //private RevoluteJoint _frontRightJoint;
 
         public override float CollisionWidth
         {
@@ -82,36 +76,36 @@ namespace Hiale.GTA2NET.Core.Logic
 
         public override Vector2 CollisionTopLeft
         {
-            get { return _shape.Vertices[0].ToBlockUnits(); }
+            get { return new Vector2(); } //_shape.Vertices[0].ToBlockUnits(); }
         }
 
         public override Vector2 CollisionTopRight
         {
-            get { return _shape.Vertices[1].ToBlockUnits(); }
+            get { return new Vector2(); } //_shape.Vertices[1].ToBlockUnits(); }
         }
 
         public override Vector2 CollisionBottomLeft
         {
-            get { return _shape.Vertices[3].ToBlockUnits(); }
+            get { return new Vector2(); } //_shape.Vertices[3].ToBlockUnits(); }
         }
 
         public override Vector2 CollisionBottomRight
         {
-            get { return _shape.Vertices[2].ToBlockUnits(); }
+            get { return new Vector2(); } // _shape.Vertices[2].ToBlockUnits(); }
         }
 
 
         private Vector2 GetSpriteVector(int index)
         {
-            Transform transform;
-            _body.GetTransform(out transform);
-            var vector = MathUtils.Multiply(ref transform, _spriteShape.Vertices[index]);
-            return vector.ToBlockUnits();
+            //Transform transform;
+            //_body.GetTransform(out transform);
+            //var vector = MathUtils.Multiply(ref transform, _spriteShape.Vertices[index]);
+            return new Vector2(); // vector.ToBlockUnits();
         }
 
         public new float RotationAngle
         {
-            get { return _body.Rotation; }
+            get { return 0; }// _body.Rotation; }
         }      
 
         public Car(Vector3 startUpPosition, float startUpRotation, CarInfo carInfo) : base(startUpPosition, startUpRotation)
@@ -120,6 +114,7 @@ namespace Hiale.GTA2NET.Core.Logic
             _wheels = new Wheel[4];
         }
 
+        /*
         public override void CreateBody(World world, float width, float height)
         {
             _collisionWidth = width;
@@ -191,8 +186,8 @@ namespace Hiale.GTA2NET.Core.Logic
             wheel.SetCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontWheelMaxDriveForce, fronWheelMaxLateralImpulse);
             _wheels[3] = wheel;
             _frontRightJoint = CreateJoint(_body, wheel.Body, wheelOffsetPosition, world);
-        }
-
+        }*/
+        /*
         private bool OnCollision(Fixture fixtureA, Fixture fixtureB, Contact contact)
         {
             if (Collided != null)
@@ -211,9 +206,10 @@ namespace Hiale.GTA2NET.Core.Logic
             wheelBody.Position = carBody.Position + anchor;
             return joint;
         }
-
+        */
         public override void Update(ParticipantInput input, float elapsedTime)
         {
+            /*
             //System.Diagnostics.Debug.WriteLine(_body.Position);
             var position = _body.Position.ToBlockUnits();
             Position3 = new Vector3(position.X, position.Y, Position3.Z);
@@ -239,6 +235,7 @@ namespace Hiale.GTA2NET.Core.Logic
             _frontLeftJoint.UpperLimit = newAngle;
             _frontRightJoint.LowerLimit = newAngle;
             _frontRightJoint.UpperLimit = newAngle;
+            */
         }
 
         public override Frame Draw()

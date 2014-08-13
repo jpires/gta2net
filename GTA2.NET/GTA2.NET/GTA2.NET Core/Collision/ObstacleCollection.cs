@@ -154,6 +154,7 @@ namespace Hiale.GTA2NET.Core.Collision
         /// </summary>
         public void RemoveUnnecessary()
         {
+            /*
             RemoveCollinearLines();
             var itemsToRemove = new List<IObstacle>();
             foreach (var target in this)
@@ -210,10 +211,12 @@ namespace Hiale.GTA2NET.Core.Collision
             }
             foreach (var item in itemsToRemove)
                 Remove(item);
+           */
         }
 
         public void Save(Map.Map map)
         {
+            /*
             using (var writer = new BinaryWriter(File.Open(map.Filename + ".col", FileMode.Create)))
             {
                 writer.Write("GTA2.NETv0.1");
@@ -258,11 +261,13 @@ namespace Hiale.GTA2NET.Core.Collision
                     }
                 }
             }
+            */ 
         }
 
         public static ObstacleCollection Load(Map.Map map)
         {
             var obstacles = new ObstacleCollection();
+            /*
             using (var reader = new BinaryReader(File.Open(map.Filename + ".col", FileMode.Open)))
             {
                 reader.ReadString(); //GTA2.NET
@@ -300,8 +305,10 @@ namespace Hiale.GTA2NET.Core.Collision
                     }
                     obstacles.Add(obstacle);
                 }
+            
             }
-            return obstacles;
+            */
+            return obstacles;            
         }
 
         private static IObstacle CreateObstacle(ObstacleType type)

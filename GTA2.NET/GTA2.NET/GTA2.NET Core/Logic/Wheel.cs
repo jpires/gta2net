@@ -25,8 +25,6 @@
 // Grand Theft Auto (GTA) is a registred trademark of Rockstar Games.
 
 using System;
-using FarseerPhysics.Collision.Shapes;
-using FarseerPhysics.Dynamics;
 using Hiale.GTA2NET.Core.Helper;
 using Microsoft.Xna.Framework;
 
@@ -46,8 +44,8 @@ namespace Hiale.GTA2NET.Core.Logic
         float _mLastDriveImpulse;
         float _mLastLateralFrictionImpulse;
 
-        public Body Body;
-
+        //public Body Body;
+        /*
         public Wheel(World world)
         {
             //_mGroundAreas = new List<WaterArea>();
@@ -63,7 +61,7 @@ namespace Hiale.GTA2NET.Core.Logic
             _mCurrentTraction = 1;
             _mCurrentDrag = 1;
 
-        }
+        }*/
 
         public void SetCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse)
         {
@@ -101,18 +99,25 @@ namespace Hiale.GTA2NET.Core.Logic
 
         public Vector2 GetLateralVelocity()
         {
+            /*
             var currentRightNormal = Body.GetWorldVector(Vector2.UnitX);
             return Vector2.Dot(currentRightNormal, Body.LinearVelocity)*currentRightNormal;
+            */
+            return new Vector2();
         }
 
         public Vector2 GetForwardVelocity()
         {
+            /*
             var currentForwardNormal = Body.GetWorldVector(Vector2.UnitY);
             return Vector2.Dot(currentForwardNormal, Body.LinearVelocity)*currentForwardNormal;
+            */
+            return new Vector2();
         }
 
         public void Update(float acceleration, float elapsedTime)
         {
+            /*
             //angulat velocity
             Body.ApplyAngularImpulse(_mCurrentTraction * 0.1f * Body.Inertia * -Body.AngularVelocity);
 
@@ -165,6 +170,7 @@ namespace Hiale.GTA2NET.Core.Logic
             if (impulse.Length() > _mMaxLateralImpulse)
                 impulse *= _mMaxLateralImpulse/impulse.Length();
             Body.ApplyLinearImpulse(_mCurrentTraction * impulse, Body.WorldCenter);
+            */
         }
 
         //public void AddGroundArea(WaterArea ga)

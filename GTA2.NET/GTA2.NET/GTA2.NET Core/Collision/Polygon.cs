@@ -26,8 +26,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FarseerPhysics.Common.Decomposition;
-using FarseerPhysics.Common.PolygonManipulation;
 using Hiale.GTA2NET.Core.Helper;
 using Hiale.GTA2NET.Core.Map;
 using Microsoft.Xna.Framework;
@@ -45,19 +43,24 @@ namespace Hiale.GTA2NET.Core.Collision
 
         public bool CheckIfFilled(Map.Map map, int layer, ObstacleCollection obstacles)
         {
+            /*
             Simplify();
             var convexPolygons = BayazitDecomposer.ConvexPartition(this);
             var blockPointsDictionary = new Dictionary<Block, List<Vector2>>();
             var blocks = GetAssociatedBlocks(convexPolygons, map, layer, blockPointsDictionary);
             var layerObstacles = CreateLayerObstacles(layer, obstacles); //ToDo: Don't call this method every time, the result does not change...
             return CheckLid(blocks, map, layer, layerObstacles, blockPointsDictionary);
+            */
+            return false;
         }
 
         private void Simplify()
         {
+            /*
             var vertices = SimplifyTools.CollinearSimplify(this);
             Clear();
             AddRange(vertices);
+             */
         }
 
         private static Dictionary<int, List<IObstacle>> CreateLayerObstacles(int layer, ObstacleCollection obstacles)
@@ -122,7 +125,7 @@ namespace Hiale.GTA2NET.Core.Collision
                             bool isOnPolygon;
                             if (pointsCache.TryGetValue(blockPoint, out isOnPolygon))
                                 continue;
-                            isOnPolygon = IsPointInPolygonOrEdge(convexPolygon, blockPoint);
+                            //isOnPolygon = IsPointInPolygonOrEdge(convexPolygon, blockPoint);
                             pointsCache.Add(blockPoint, isOnPolygon);
                             if (!isOnPolygon)
                                 continue;

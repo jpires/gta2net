@@ -106,6 +106,7 @@ namespace Hiale.GTA2NET.Core.Helper
 
         private static void DrawPolygon(IObstacle obstacle, Graphics g, System.Drawing.Color color)
         {
+            /*
             var polygonObstacle = (PolygonObstacle) obstacle;
             var points = new System.Drawing.Point[polygonObstacle.Vertices.Count];
             for (var i = 0; i < polygonObstacle.Vertices.Count; i++)
@@ -115,6 +116,7 @@ namespace Hiale.GTA2NET.Core.Helper
             }
             g.FillPolygon(new SolidBrush(System.Drawing.Color.FromArgb(128, color)), points);
             g.DrawPolygon(new Pen(System.Drawing.Color.FromArgb(192, color)), points);
+            */
         }
 
         private static void DrawRectangle(IObstacle obstacle, Graphics g, System.Drawing.Color color)

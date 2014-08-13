@@ -26,11 +26,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FarseerPhysics.Common;
 using Microsoft.Xna.Framework;
 
 namespace Hiale.GTA2NET.Core.Helper
 {
+    public class VerticesEx : IEquatable<VerticesEx>
+    {
+        public bool Equals(VerticesEx other)
+        {
+            if (other == null)
+                return false;
+            return false;
+        }
+    }
+    /*
     public class VerticesEx : Vertices, IEquatable<VerticesEx>
     {
         public override int GetHashCode()
@@ -143,5 +152,5 @@ namespace Hiale.GTA2NET.Core.Helper
             // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
-    }
+    }*/
 }

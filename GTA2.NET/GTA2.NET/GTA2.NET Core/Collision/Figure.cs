@@ -26,8 +26,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FarseerPhysics.Common;
-using FarseerPhysics.Common.PolygonManipulation;
 using Hiale.GTA2NET.Core.Helper;
 using Microsoft.Xna.Framework;
 
@@ -75,6 +73,7 @@ namespace Hiale.GTA2NET.Core.Collision
         /// <returns></returns>
         public virtual void Tokenize(ObstacleCollection obstacles)
         {
+            /*
             if (Lines.Count == 0)
                 return;
             GetForlorn(obstacles);
@@ -94,6 +93,7 @@ namespace Hiale.GTA2NET.Core.Collision
                 else
                     AddLineObstacles(polygon, obstacles, Layer);
             }
+            */
         }
 
         protected static void PrepareBasePriorityTable()
@@ -291,6 +291,7 @@ namespace Hiale.GTA2NET.Core.Collision
         /// <returns></returns>
         public virtual Polygon CreatePolygon(IEnumerable<LineSegment> sourceSegments)
         {
+            /*
             var polygon = new Polygon();
             var lineSegments = new List<LineSegment>(sourceSegments);
 
@@ -314,6 +315,8 @@ namespace Hiale.GTA2NET.Core.Collision
                 polygon.Lines.Add(preferedLine);
             }
             return polygon;
+            */
+            return new Polygon();
         }
 
         /// <summary>
@@ -325,6 +328,7 @@ namespace Hiale.GTA2NET.Core.Collision
         protected virtual ICollection<Polygon> SplitPolygon(List<LineSegment> sourceSegments, ObstacleCollection obstacles)
         {
             var verticesCombinations = new HashSet<Polygon>();
+            /*
             foreach (var switchPoint in SwitchPoints)
             {
                 foreach (var endPoint in switchPoint.Value.EndPoints)
@@ -363,12 +367,14 @@ namespace Hiale.GTA2NET.Core.Collision
 
             var forlornLines = GetPolygonForlornLines(sourceSegments, verticesCombinations);
             obstacles.AddRange(forlornLines.Select(forlornLine => new LineObstacle(forlornLine.Start, forlornLine.End, Layer)));
+            */
 
             return verticesCombinations;
         }
 
         protected virtual void MergePolygons(IEnumerable<Polygon> polygons, ObstacleCollection obstacles)
         {
+            /*
             var filledPolygons = new List<Vertices>();
             var mergedPolygons = new List<Vertices>();
 
@@ -422,6 +428,8 @@ namespace Hiale.GTA2NET.Core.Collision
 
             foreach (var mergedPolygon in mergedPolygons)
                 AddPolygonObstacle(mergedPolygon, VerticesEx.IsRectangle(mergedPolygon), obstacles, Layer);
+        
+             */
         }
 
         protected static IEnumerable<LineSegment> GetPolygonForlornLines(IEnumerable<LineSegment> sourceSegments, IEnumerable<Polygon> verticesCombinations)
@@ -446,6 +454,7 @@ namespace Hiale.GTA2NET.Core.Collision
         /// <param name="verticesCombinations"></param>
         protected static void RemoveUnnecessaryPolygons(ICollection<Polygon> verticesCombinations)
         {
+            /*
             var itemsToRemove = new List<Polygon>();
             foreach (var verticesCombination in verticesCombinations)
             {
@@ -460,6 +469,7 @@ namespace Hiale.GTA2NET.Core.Collision
             }
             foreach (var item in itemsToRemove)
                 verticesCombinations.Remove(item);
+            */
         }
 
         protected internal static LineSegment ChooseNextLine(Vector2 currentItem, IEnumerable<LineSegment> lineSegments, Direction currentDirection)
@@ -505,7 +515,7 @@ namespace Hiale.GTA2NET.Core.Collision
             for (int i = 0, j = polygonVertices.Count - 1; i < polygonVertices.Count; j = i++)
                 obstacles.Add(new LineObstacle(polygonVertices[i], polygonVertices[j], layer));
         }
-
+        /*
         protected static void AddPolygonObstacle(Vertices polygonVertices, bool isRectangle, ObstacleCollection obstacles, int layer)
         {
             if (isRectangle)
@@ -518,6 +528,7 @@ namespace Hiale.GTA2NET.Core.Collision
                 var polygonObstacle = new PolygonObstacle(polygonVertices, layer);
                 obstacles.Add(polygonObstacle);
             }
-        }
+        }*
+        */
     }
 }

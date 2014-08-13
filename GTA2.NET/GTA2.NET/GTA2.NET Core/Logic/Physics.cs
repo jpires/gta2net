@@ -29,11 +29,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using FarseerPhysics.Collision.Shapes;
-using FarseerPhysics.Common.Decomposition;
-using FarseerPhysics.Dynamics;
-using FarseerPhysics.Dynamics.Joints;
-using Hiale.FarseerPhysicsJSON;
 using Hiale.GTA2NET.Core.Collision;
 using Hiale.GTA2NET.Core.Helper;
 using Microsoft.Xna.Framework;
@@ -42,8 +37,8 @@ namespace Hiale.GTA2NET.Core.Logic
 {
     public class Physics
     {
-        private World _world;
-        private readonly WorldJsonSerializer _json = new WorldJsonSerializer(); //debug
+        //private World _world;
+        //private readonly WorldJsonSerializer _json = new WorldJsonSerializer(); //debug
 
         public Physics()
         {
@@ -52,9 +47,13 @@ namespace Hiale.GTA2NET.Core.Logic
 
         public void Initialize(Map.Map map)
         {
+            /*
             var collision = new CollisionMap(map);
             if (_world == null)
-                _world = new World(new Vector2(0, 0));
+            {
+                CollisionSystem collisionSystem = new CollisionSystemSAP();
+                _world = new World(collisionSystem);
+            }
             else
                 _world.Clear();
 
@@ -92,25 +91,29 @@ namespace Hiale.GTA2NET.Core.Logic
                         break;
                 }
             }
+            */
         }
 
         public void Update(GameTime gameTime)
         {
-            _world.Step(Math.Min((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f, (1f / 60f)));
+            //_world.Step(Math.Min((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f, (1f / 60f)));
         }
 
         public void AddObject(IPhysicsBehaviour gameplayObject)
         {
-            gameplayObject.CreateBody(_world, -1, -1); //ToDo
+            //gameplayObject.CreateBody(_world, -1, -1); //ToDo
         }
 
         public void AddObject(Car car)
         {
+            /*
             var widthInBlockUnits = ConvertUnits.ToBlockUnits(car.CarInfo.Width);
             var heightInBlockUnits = ConvertUnits.ToBlockUnits(car.CarInfo.Height);
             car.CreateBody(_world, widthInBlockUnits, heightInBlockUnits);
+            */
         }
 
+        /*
         public void Debug(Car car)
         {
             var carBody = (Body)Extensions.GetPrivateField(car, "_body");
@@ -134,13 +137,13 @@ namespace Hiale.GTA2NET.Core.Logic
 
             SaveWorld("GTA2NET.json");
         }
-
-        public void SaveWorld(string filename)
+            */
+        /*public void SaveWorld(string filename)
         {
             using (var fs = new FileStream(filename, FileMode.Create))
             {
                 _json.Serialize(_world, fs);
             }
-        }
+        }*/
     }
 }
