@@ -26,6 +26,10 @@
 
 using Hiale.GTA2NET.Core.Collision;
 using Hiale.GTA2NET.Core.Helper;
+using Jitter.Collision;
+using Jitter.Collision.Shapes;
+using Jitter.Dynamics;
+using Jitter.LinearMath;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -597,6 +601,101 @@ namespace Hiale.GTA2NET.Core.Map
             if (DoesWallCollide(Bottom, bulletWall))
                 obstacles.Add(GetDefaultBottomCollison());
 
+        }
+
+        /// <summary>
+        /// The list of triangles that compose this block.
+        /// </summary>
+        public List<TriangleVertexIndices> CollisionTriangles = new List<TriangleVertexIndices>();
+        /// <summary>
+        /// The list of vertices that compose this block.
+        /// </summary>
+        public List<JVector> CollisionVertices = new List<JVector>();
+
+
+        /// <summary>
+        /// Create the collision shape for this block.
+        /// Sets the CollisionVertices and CollisionTriangles.
+        /// </summary>
+        public void CreateColisions() 
+        {
+            //ToDo: create the correct collision for each type of block.
+            //Remark: When create the TriangleVertexIndices the order of the vertices MUST be in clockwise order.
+            createLidCollision();
+            createTopCollision();
+            createBottonCollision();
+            createLeftCollision();
+            createRightCollision();
+        }
+
+        private void createRightCollision()
+        {
+            if (!Right)
+                return;
+
+            CollisionVertices.Add(new JVector(Position.X + 1, Position.Y + 1, Position.Z + 1)); //TopLeft
+            CollisionVertices.Add(new JVector(Position.X + 1, Position.Y, Position.Z + 1)); //TopRigth
+            CollisionVertices.Add(new JVector(Position.X + 1, Position.Y, Position.Z)); //BottomRight
+            CollisionVertices.Add(new JVector(Position.X + 1, Position.Y + 1, Position.Z)); //BottomLeft
+
+            CollisionTriangles.Add(new TriangleVertexIndices(0, 1, 2));
+            CollisionTriangles.Add(new TriangleVertexIndices(2, 3, 0));
+        }
+
+        private void createLeftCollision()
+        {
+            if (!Left)
+                return;
+
+            CollisionVertices.Add(new JVector(Position.X, Position.Y + 1, Position.Z + 1)); //TopLeft
+            CollisionVertices.Add(new JVector(Position.X, Position.Y, Position.Z + 1)); //TopRigth
+            CollisionVertices.Add(new JVector(Position.X, Position.Y, Position.Z)); //BottomRight
+            CollisionVertices.Add(new JVector(Position.X, Position.Y + 1, Position.Z)); //BottomLeft
+
+            CollisionTriangles.Add(new TriangleVertexIndices(0, 1, 2));
+            CollisionTriangles.Add(new TriangleVertexIndices(2, 3, 0));
+        }
+
+        private void createBottonCollision()
+        {
+            if (!Bottom)
+                return;
+
+            CollisionVertices.Add(new JVector(Position.X, Position.Y + 1, Position.Z + 1)); //TopLeft
+            CollisionVertices.Add(new JVector(Position.X + 1, Position.Y + 1, Position.Z + 1)); //TopRigth
+            CollisionVertices.Add(new JVector(Position.X + 1, Position.Y + 1, Position.Z)); //BottomRight
+            CollisionVertices.Add(new JVector(Position.X, Position.Y + 1, Position.Z)); //BottomLeft
+
+            CollisionTriangles.Add(new TriangleVertexIndices(0, 1, 2));
+            CollisionTriangles.Add(new TriangleVertexIndices(2, 3, 0));
+        }
+
+        private void createTopCollision()
+        {
+            if (!Top)
+                return;
+
+            CollisionVertices.Add(new JVector(Position.X, Position.Y, Position.Z + 1)); //TopLeft
+            CollisionVertices.Add(new JVector(Position.X + 1, Position.Y, Position.Z + 1)); //TopRigth
+            CollisionVertices.Add(new JVector(Position.X + 1, Position.Y, Position.Z)); //BottomRight
+            CollisionVertices.Add(new JVector(Position.X, Position.Y, Position.Z)); //BottomLeft
+
+            CollisionTriangles.Add(new TriangleVertexIndices(0, 1, 2));
+            CollisionTriangles.Add(new TriangleVertexIndices(2, 3, 0));
+        }
+
+        private void createLidCollision()
+        {
+            if (!Lid)
+                return;
+
+            CollisionVertices.Add(new JVector(Position.X, Position.Y, Position.Z + 1)); //TopLeft
+            CollisionVertices.Add(new JVector(Position.X + 1, Position.Y, Position.Z + 1)); //TopRigth
+            CollisionVertices.Add(new JVector(Position.X + 1, Position.Y + 1, Position.Z + 1)); //BottomRight
+            CollisionVertices.Add(new JVector(Position.X, Position.Y + 1, Position.Z + 1)); //BottomLeft
+
+            CollisionTriangles.Add(new TriangleVertexIndices(0, 1, 2));
+            CollisionTriangles.Add(new TriangleVertexIndices(2, 3, 0));
         }
 
         protected virtual bool DoesWallCollide(BlockFaceEdge blockFace, bool bulletWall)

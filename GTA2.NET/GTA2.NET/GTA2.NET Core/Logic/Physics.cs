@@ -24,126 +24,88 @@
 // 
 // Grand Theft Auto (GTA) is a registred trademark of Rockstar Games.
 
+using Hiale.GTA2NET.Core.Map;
+using Jitter;
+using Jitter.Collision;
+using Jitter.Collision.Shapes;
+using Jitter.Dynamics;
+using Jitter.LinearMath;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Hiale.GTA2NET.Core.Collision;
-using Hiale.GTA2NET.Core.Helper;
-using Microsoft.Xna.Framework;
 
 namespace Hiale.GTA2NET.Core.Logic
 {
+    /// <summary>
+    /// Used to abstract the interaction with the pysics engine.
+    /// </summary>
     public class Physics
     {
-        //private World _world;
-        //private readonly WorldJsonSerializer _json = new WorldJsonSerializer(); //debug
+        /// <summary>
+        /// The jitter representation of the world.
+        /// </summary>
+        private World world;
 
-        public Physics()
+        /// <summary>
+        /// Creates an instance of Physics class.
+        /// </summary>
+        /// <param name="map">The map to use as physic base.</param>
+        public Physics(Map.Map map)
         {
-            //
+            CollisionSystem collisionSystem = new CollisionSystemSAP();
+            collisionSystem.UseTriangleMeshNormal = false;
+            world = new World(collisionSystem);
+            world.Gravity = new Jitter.LinearMath.JVector(0, 0, -10);
+            Initialize(map);
         }
-
-        public void Initialize(Map.Map map)
+        /// <summary>
+        /// Initialize the physic world with the geometric detail of map.
+        /// </summary>
+        /// <param name="map">The base to create the physic world.</param>
+        private void Initialize(Map.Map map)
         {
-            /*
-            var collision = new CollisionMap(map);
-            if (_world == null)
-            {
-                CollisionSystem collisionSystem = new CollisionSystemSAP();
-                _world = new World(collisionSystem);
-            }
-            else
-                _world.Clear();
-
-            var obstacles = collision.GetObstacles();
-            var layer2Obstacles = obstacles.GetObstacles(2);
-            foreach (var obstacle in layer2Obstacles)
-            {
-                var body = new Body(_world) { BodyType = BodyType.Static };
-                _json.SetName(body, "Building" + obstacle.Z);
-                Shape shape;
-                Fixture fixture;
-                switch (obstacle.Type)
-                {
-                    case ObstacleType.Line:
-                        var lineObstacle = (LineObstacle)obstacle;
-                        shape = new EdgeShape(lineObstacle.Start.ToMeters(), lineObstacle.End.ToMeters());
-                        fixture = body.CreateFixture(shape);
-                        _json.SetName(fixture, "Building" + obstacle.Z);
-                        break;
-                    case ObstacleType.Polygon:
-                        var polygonObstacle = (PolygonObstacle)obstacle;
-                        var convexPolygons = BayazitDecomposer.ConvexPartition(polygonObstacle.Vertices);
-                        foreach (var convexPolygon in convexPolygons)
+            List<JVector> vertices = new List<JVector>();
+            List<TriangleVertexIndices> indices = new List<TriangleVertexIndices>();
+            
+            for (uint i = 0; i < map.Width; i++)
+                for (uint j = 0; j < map.Length; j++)
+                    for (uint k = 0; k < map.Height; k++)
+                    {
+                        int pos = 0;
+                        Block block = map.GetBlock(new Vector3(i, j, k));
+                        block.CreateColisions();
+                        foreach (JVector vertice in block.CollisionVertices)
                         {
-                            shape = new PolygonShape(convexPolygon.ToMeters(), 1);
-                            fixture = body.CreateFixture(shape);
-                            _json.SetName(fixture, "Building" + obstacle.Z);
+                            vertices.Add(vertice);
+                            pos++;
                         }
-                        break;
-                    case ObstacleType.Rectangle:
-                        var rectangleObstacle = (RectangleObstacle)obstacle;
-                        shape = new PolygonShape(rectangleObstacle.Vertices.ToMeters(), 1);
-                        fixture = body.CreateFixture(shape);
-                        _json.SetName(fixture, "Building" + obstacle.Z);
-                        break;
-                }
-            }
-            */
+
+                        int newPos = vertices.Count - pos;
+                        foreach (TriangleVertexIndices indice in block.CollisionTriangles)
+                        {
+                            TriangleVertexIndices t = new TriangleVertexIndices(indice.I0 + newPos, indice.I1 + newPos, indice.I2 + newPos);
+                            indices.Add(t);
+                        }
+                    }
+
+            //ToDo: The vertices list has duplicated vertices. In the worst case each vertice has 4 different instanciation.
+            //Probaly some performance can be expected by remove the duplicated ones.
+            //However it is also necessary to update the indies List with the correct positions.
+
+            Octree tree = new Octree(vertices, indices);
+            TriangleMeshShape shape = new TriangleMeshShape(tree);
+            RigidBody body = new RigidBody(shape);
+            body.IsStatic = true;
+            world.AddBody(body);
         }
 
-        public void Update(GameTime gameTime)
+        /// <summary>
+        /// Updates the simulation.
+        /// </summary>
+        /// <param name="elapsedTime">The elapsed time since the last update.</param>
+        public void Update(float elapsedTime)
         {
-            //_world.Step(Math.Min((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f, (1f / 60f)));
+            world.Step(elapsedTime, false);
         }
-
-        public void AddObject(IPhysicsBehaviour gameplayObject)
-        {
-            //gameplayObject.CreateBody(_world, -1, -1); //ToDo
-        }
-
-        public void AddObject(Car car)
-        {
-            /*
-            var widthInBlockUnits = ConvertUnits.ToBlockUnits(car.CarInfo.Width);
-            var heightInBlockUnits = ConvertUnits.ToBlockUnits(car.CarInfo.Height);
-            car.CreateBody(_world, widthInBlockUnits, heightInBlockUnits);
-            */
-        }
-
-        /*
-        public void Debug(Car car)
-        {
-            var carBody = (Body)Extensions.GetPrivateField(car, "_body");
-            _json.SetName(carBody, "Car");
-            _json.SetName(carBody.FixtureList[0], "CarCollision");
-            _json.SetName(carBody.FixtureList[1], "CarSprite");
-            var wheels = (Wheel[])Extensions.GetPrivateField(car, "_wheels");
-            _json.SetName(wheels[0].Body, "WheelBackLeft");
-            _json.SetName(wheels[0].Body.FixtureList[0], "WheelBackLeft");
-            _json.SetName(wheels[1].Body, "WheelBackRight");
-            _json.SetName(wheels[1].Body.FixtureList[0], "WheelBackRight");
-            _json.SetName(wheels[2].Body, "WheelFrontLeft");
-            _json.SetName(wheels[2].Body.FixtureList[0], "WheelFrontLeft");
-            _json.SetName(wheels[3].Body, "WheelFrontRight");
-            _json.SetName(wheels[3].Body.FixtureList[0], "WheelFrontRight");
-
-            _json.SetName((Joint)Extensions.GetPrivateField(car, "_backLeftJoint"), "BackLeftJoint");
-            _json.SetName((Joint)Extensions.GetPrivateField(car, "_backRightJoint"), "BackRightJoint");
-            _json.SetName((Joint)Extensions.GetPrivateField(car, "_frontLeftJoint"), "FrontLeftJoint");
-            _json.SetName((Joint)Extensions.GetPrivateField(car, "_frontRightJoint"), "FrontRightJoint");
-
-            SaveWorld("GTA2NET.json");
-        }
-            */
-        /*public void SaveWorld(string filename)
-        {
-            using (var fs = new FileStream(filename, FileMode.Create))
-            {
-                _json.Serialize(_world, fs);
-            }
-        }*/
     }
 }

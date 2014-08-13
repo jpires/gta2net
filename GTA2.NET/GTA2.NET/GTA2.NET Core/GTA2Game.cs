@@ -30,6 +30,7 @@ using Hiale.GTA2NET.Core.Logic;
 using Hiale.GTA2NET.Core.Map;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Jitter.Dynamics;
 
 namespace Hiale.GTA2NET.Core
 {
@@ -51,14 +52,13 @@ namespace Hiale.GTA2NET.Core
             map = new Map.Map(mapName, styleName);
             map.CalcCoord();
 
-            _physics = new Physics();
-            _physics.Initialize(map);
+            _physics = new Physics(map);
 
             sprites = new Sprites();
             GameObject.spriteAtlas = sprites;
             pedList = new List<Pedestrian>();
-            pedList.Add(new Pedestrian(new Vector3(65, 180, 5)));
-
+            Pedestrian ped = new Pedestrian(new Vector3(65, 178, 5));
+            pedList.Add(ped);
         }
 
         /// <summary>
@@ -77,6 +77,7 @@ namespace Hiale.GTA2NET.Core
         public void Update(float elapsedTime) //ToDo: put this method private. Before is necessary to create a simulation thread.
         {
             pedList[0].Update(playerInput, elapsedTime);
+            _physics.Update(elapsedTime);
         }
 
         /// <summary>
