@@ -29,6 +29,7 @@ using Hiale.GTA2NET.Core.Map;
 using Jitter;
 using Jitter.Collision;
 using Jitter.Collision.Shapes;
+using Jitter.DataStructures;
 using Jitter.Dynamics;
 using Jitter.LinearMath;
 using Microsoft.Xna.Framework;
@@ -120,6 +121,14 @@ namespace Hiale.GTA2NET.Core.Physics
             PedestrianController controller = new PedestrianController(world, body);
             world.AddConstraint(controller);
             ped.Controller = controller;
+        }
+
+        public ReadOnlyHashset<RigidBody> RigidBodiesList
+        {
+            get
+            {
+                return world.RigidBodies;
+            }
         }
     }
 }

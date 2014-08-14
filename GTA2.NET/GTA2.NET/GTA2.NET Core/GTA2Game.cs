@@ -61,6 +61,8 @@ namespace Hiale.GTA2NET.Core
             Pedestrian ped = new Pedestrian(new Vector3(65, 178, 5));
             pedList.Add(ped);
             _physics.AddPed(ped);
+
+            debugDraw = false;
         }
 
         /// <summary>
@@ -137,12 +139,39 @@ namespace Hiale.GTA2NET.Core
                 }
 
             }
-            return new Frame(VertexPosList, IndexBufferList, objectsVertexPosList, objectsIndexBufferList, pos);
+
+            Frame frame = new Frame(VertexPosList, IndexBufferList, objectsVertexPosList, objectsIndexBufferList, pos);
+            if(debugDraw)
+            {
+                drawer = new DebugDrawer();
+                foreach (RigidBody body in _physics.RigidBodiesList)
+                {
+                    body.DebugDraw(drawer);
+                    body.AllowDeactivation = false;
+                    body.EnableDebugDraw = true;
+                }
+
+                frame.TriangleDebug = drawer.DrawInfo.TriangleDebug;
+                frame.LineDebug = drawer.DrawInfo.LineDebug;
+            }
+
+            return frame;
         }
 
         public Frame getPosition()
         {
             return getPosition(pedList[0].Position2);
+        }
+
+
+        private bool debugDraw;
+        private DebugDrawer drawer;
+        public void ToggleDebugDrawing()
+        {
+            if(debugDraw)
+                debugDraw = false;                
+            else
+                debugDraw = true;
         }
     }
 }

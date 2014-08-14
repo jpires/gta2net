@@ -34,14 +34,54 @@ namespace Hiale.GTA2NET.Core
     /// </summary>
     public class Frame
     {
-        public Frame(List<VertexPositionNormalTexture> mapVertexList, List<int> mapIndexList, List<VertexPositionNormalTexture> objectVertexList, List<int> objectIndexList, Vector2 position)
+        /// <summary>
+        /// Creates an instance of Frame
+        /// </summary>
+        /// <param name="mapVertexList">A list with the map vertices.</param>
+        /// <param name="mapIndexList">A list with the order that the map vertices should be grouped.</param>
+        /// <param name="objectVertexList">A list with the objects vertices.</param>
+        /// <param name="objectIndexList">A list with the order that the object vertices should be grouped.</param>
+        /// <param name="lineDebug">A list of vertices used to draw the debug lines.</param>
+        /// <param name="triangleDebug">A list of vertices used to draw the debug triangles.</param>
+        /// <param name="position">The center position of this frame.</param>
+        public Frame(List<VertexPositionNormalTexture> mapVertexList, List<int> mapIndexList,
+                     List<VertexPositionNormalTexture> objectVertexList, List<int> objectIndexList,
+                     List<VertexPositionColor> lineDebug, List<VertexPositionColor> triangleDebug, Vector2 position)
         {
-            this.MapVertexList = mapVertexList;
-            this.MapIndexList = mapIndexList;
-            this.ObjectVertexList = objectVertexList;
-            this.ObjectIndexList = objectIndexList;
-            this.Position = position;
+            MapVertexList = mapVertexList;
+            MapIndexList = mapIndexList;
+            ObjectVertexList = objectVertexList;
+            ObjectIndexList = objectIndexList;
+            Position = position;
+            LineDebug = lineDebug;
+            TriangleDebug = triangleDebug;
         }
+
+        /// <summary>
+        /// Creates an instance of Frame
+        /// </summary>
+        /// <param name="mapVertexList">A list with the map vertices.</param>
+        /// <param name="mapIndexList">A list with the order that the map vertices should be grouped.</param>
+        /// <param name="objectVertexList">A list with the objects vertices.</param>
+        /// <param name="objectIndexList">A list with the order that the object vertices should be grouped.</param>
+        /// <param name="position">The center position of this frame.</param>
+        public Frame(List<VertexPositionNormalTexture> mapVertexList, List<int> mapIndexList,
+                     List<VertexPositionNormalTexture> objectVertexList, List<int> objectIndexList,
+                     Vector2 position)
+        :this(mapVertexList, mapIndexList, objectVertexList, objectIndexList,
+                new List<VertexPositionColor>(), new List<VertexPositionColor>(), position)
+        {}
+
+        /// <summary>
+        /// Creates an instance of Frame
+        /// </summary>
+        /// <param name="lineDebug">A list of vertices used to draw the debug lines.</param>
+        /// <param name="triangleDebug">A list of vertices used to draw the debug triangles.</param>
+        public Frame(List<VertexPositionColor> lineDebug, List<VertexPositionColor> triangleDebug)
+            :this(new List<VertexPositionNormalTexture>(), new List<int>(),
+                  new List<VertexPositionNormalTexture>(), new List<int>(),
+                    lineDebug, triangleDebug, new Vector2())
+        {}
 
         /// <summary>
         /// A list with the map vertices's to draw.
@@ -67,5 +107,15 @@ namespace Hiale.GTA2NET.Core
         /// The center position of this frame.
         /// </summary>
         public Vector2 Position { get; private set; }
+
+        /// <summary>
+        /// A list with vertices used to draw debug lines.
+        /// </summary>
+        public List<VertexPositionColor> LineDebug { get;  set; }
+
+        /// <summary>
+        /// A list with vertices used to draw debug triangles.
+        /// </summary>
+        public List<VertexPositionColor> TriangleDebug { get;  set; }
     }
 }

@@ -85,6 +85,7 @@ namespace Hiale.GTA2NET
         private Frame frame;
         private Effect mapEffect;
         private Effect spritesEffect;
+        private BasicEffect debugEffect;
 
         /// <summary>
         /// Textures used in the map blocks
@@ -118,12 +119,15 @@ namespace Hiale.GTA2NET
 
             LoadTexture();
             game = new GTA2Game(mapPath, styleName);
+            //game.ToggleDebugDrawing();
 
             mapEffect = Content.Load<Effect>(@"Content\Effect2");
             mapEffect.Parameters["ModelTexture"].SetValue(tiles);
 
             spritesEffect = Content.Load<Effect>(@"Content\Effect1");
             spritesEffect.Parameters["ModelTexture"].SetValue(sprites);
+
+            debugEffect = new BasicEffect(BaseGame.GraphicsManager.GraphicsDevice);
 
             CameraPos = new Vector3(65, -180, 8);
             ViewMatrix = Matrix.CreateLookAt(CameraPos, new Vector3(CameraPos.X, CameraPos.Y, 0), Vector3.Up);
@@ -196,6 +200,8 @@ namespace Hiale.GTA2NET
                 //_playerRotationDelta = RotationScalar * _elapsedGameTime;
                 playerInput.Rotation = -0.5f;
             }
+            if (Input.KeyboardF1JustPressed)
+                game.ToggleDebugDrawing();
         }
 
         /// <summary>
@@ -211,6 +217,12 @@ namespace Hiale.GTA2NET
             spritesEffect.Parameters["View"].SetValue(ViewMatrix);
             spritesEffect.Parameters["Projection"].SetValue(ProjectionMatrix);
 
+            debugEffect.World = WorldMatrix;
+            debugEffect.View = ViewMatrix;
+            debugEffect.Projection = ProjectionMatrix;
+            debugEffect.VertexColorEnabled = false;
+            debugEffect.TextureEnabled = false;
+
             // Used to show the "map" inWireframe
             RasterizerState r = new RasterizerState();
             r.FillMode = FillMode.WireFrame;
@@ -218,6 +230,7 @@ namespace Hiale.GTA2NET
 
             drawMap();
             drawObjects();
+            drawDebug();
         }
 
         void drawMap()
@@ -259,6 +272,26 @@ namespace Hiale.GTA2NET
             {
                 pass.Apply();
                 spritesEffect.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, frame.ObjectVertexList.Count, 0, frame.ObjectIndexList.Count / 3);
+            }
+        }
+
+        void drawDebug()
+        {
+            foreach (EffectPass pass in debugEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+
+                if (frame.LineDebug.Count != 0)
+                {
+                    GraphicsDevice.DrawUserPrimitives<VertexPositionColor>(
+                        PrimitiveType.LineList, frame.LineDebug.ToArray(), 0, frame.LineDebug.Count / 2);
+                }
+
+                if (frame.TriangleDebug.Count != 0)
+                {
+                    GraphicsDevice.DrawUserPrimitives<VertexPositionColor>(
+                        PrimitiveType.TriangleList, frame.TriangleDebug.ToArray(), 0, frame.TriangleDebug.Count / 3);
+                }
             }
         }
     }
