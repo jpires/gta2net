@@ -24,6 +24,7 @@
 // 
 // Grand Theft Auto (GTA) is a registred trademark of Rockstar Games.
 
+using Hiale.GTA2NET.Core.Logic;
 using Hiale.GTA2NET.Core.Map;
 using Jitter;
 using Jitter.Collision;
@@ -105,6 +106,20 @@ namespace Hiale.GTA2NET.Core.Physics
         public void Update(float elapsedTime)
         {
             world.Step(elapsedTime, false);
+        }
+
+        /// <summary>
+        /// Add a new pedestrian to the simulation.
+        /// </summary>
+        /// <param name="ped">The pedestrian to add.</param>
+        public void AddPed(Pedestrian ped)
+        {
+            RigidBody body = ped.Body;
+            world.AddBody(body);
+
+            PedestrianController controller = new PedestrianController(world, body);
+            world.AddConstraint(controller);
+            ped.Controller = controller;
         }
     }
 }

@@ -84,6 +84,9 @@
     <Compile Include="Logic\IPhysicsBehaviour.cs" />
     <Compile Include="Logic\ParticipantInput.cs" />
     <Compile Include="Logic\Pedestrian.cs" />
+    <Compile Include="Physics\PedestrianController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Physics\WorldSimulation.cs" />
     <Compile Include="Logic\Player.cs" />
     <Compile Include="Logic\Vehicle.cs" />

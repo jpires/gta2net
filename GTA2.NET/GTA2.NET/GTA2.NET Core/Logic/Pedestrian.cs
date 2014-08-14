@@ -24,7 +24,10 @@
 // 
 // Grand Theft Auto (GTA) is a registred trademark of Rockstar Games.
 
-using System.Collections.Generic;
+using Hiale.GTA2NET.Core.Physics;
+using Jitter.Collision.Shapes;
+using Jitter.Dynamics;
+using Jitter.LinearMath;
 using Microsoft.Xna.Framework;
 using System;
 
@@ -59,12 +62,71 @@ namespace Hiale.GTA2NET.Core.Logic
         /// <param name="elapsedTime">The time occurred since the last Update.</param>
         public override void Update(ParticipantInput input, float elapsedTime)
         {
-            float x, y;
-            RotationAngle += input.Rotation;
+            if (input.Forward != 0)
+            {
+                if(input.Forward > 0)
+                    Controller.Direction = Walk.Forward;
+                else
+                    Controller.Direction = Walk.Backward;
+            }
+            else
+            {
+                Controller.Direction = Walk.None;
+            }
 
-            x = (float)(Position3.X + input.Forward * Math.Cos(RotationAngle));
-            y = (float)(Position3.Y - input.Forward * Math.Sin(RotationAngle));
-            Position3 = new Vector3(x, y, Position3.Z);
+            if (input.Rotation != 0)
+            {
+                if (input.Rotation > 0)
+                    Controller.Rotate = Rotate.Clockwise;
+                else
+                    Controller.Rotate = Rotate.Anticlockwise;
+            }
+            else
+            {
+                Controller.Rotate = Rotate.None;
+            }
+
+            Position3 = new Vector3(body.Position.X, body.Position.Y, body.Position.Z);
+
+            // Calculate the angle on Z.
+            // Seen on http://nghiaho.com/?page_id=846
+            float r21 = body.Orientation.M21;
+            float r11 = body.Orientation.M11;
+            float angle = (float)Math.Atan2(r21, r11);
+      
+            RotationAngle = angle;
+        }
+
+
+        public PedestrianController Controller { get; set; }
+
+        private RigidBody body;
+
+        public RigidBody Body
+        {
+            get
+            {
+                if (body == null)
+                    createBody();
+
+                return body;
+            }
+            private set
+            {
+                body = value;
+            }
+        }
+
+        private void createBody()
+        {
+            //ToDo: set the size in a more adjustable way.
+            body = new RigidBody(new BoxShape(1.0f, 0.5f, 0.5f));
+            body.Position = new JVector(Position3.X, Position3.Y, Position3.Z);
+
+            JMatrix innertia = JMatrix.Identity;
+            body.SetMassProperties(innertia, 1, true);
+            body.IsActive = true;
+            body.AffectedByGravity = true;
         }
     }
 }

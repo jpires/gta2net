@@ -60,6 +60,7 @@ namespace Hiale.GTA2NET.Core
             pedList = new List<Pedestrian>();
             Pedestrian ped = new Pedestrian(new Vector3(65, 178, 5));
             pedList.Add(ped);
+            _physics.AddPed(ped);
         }
 
         /// <summary>
